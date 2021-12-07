@@ -90,6 +90,8 @@ public class BreakoutGUI extends Application implements IEventHandler {
         // Bind bricks to images
         //bindBricks(bricks);  // TODO
 
+        breakout = new Breakout();
+
         // Start game
         timer.start();
         running = true;
@@ -254,7 +256,7 @@ public class BreakoutGUI extends Application implements IEventHandler {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Breakout");
 
-        // Set assets, splash (order matters) and inital menu state
+        // Set assets, splash (order matters) and initial menu state
         assets = new Assets();
         menu.fixMenusKillGame();
         renderSplash();

@@ -1,6 +1,7 @@
 package breakout.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -16,13 +17,15 @@ public class Breakout {
     public static final double GAME_WIDTH = 400;
     public static final double GAME_HEIGHT = 400;
     public static final double BALL_SPEED_FACTOR = 1.05; // Increase ball speed
-    public static final long SEC = 1_000_000_000;  // Nano seconds used by JavaFX
+    public static final long SEC = 1_000_000_000;  // Nanoseconds used by JavaFX
 
     private int nBalls = 5;
     int playerPoints;
 
     // TODO Constructor that accepts all objects needed for the model
+    public Breakout() {
 
+    }
 
     // --------  Game Logic -------------
 
@@ -30,6 +33,7 @@ public class Breakout {
 
     public void update(long now) {
         // TODO  Main game loop, start functional decomposition from here
+
     }
 
     // ----- Helper methods--------------
@@ -41,7 +45,9 @@ public class Breakout {
     // --- Used by GUI  ------------------------
 
     public List<IPositionable> getPositionables() {
-        return null;  // TODO return all objects to be rendered by GUI
+        List<IPositionable> items = new ArrayList<>();
+        items.add(new Ball(10, 10, 20, 20));
+        return items;
     }
 
     public int getPlayerPoints() {

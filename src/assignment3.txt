@@ -58,7 +58,7 @@ The GUI
 --------
 This is a graphical event driven JavaFX program. All graphics and event
 handling code is in BreakoutGUI and BreakoutMenu files.
-- The GUI has no game logic what so ever, it's just the look and the events
+- The GUI has no game logic whatsoever, it's just the look and the events
   (from GUI to model and from model to GUI)
 - BreakoutGUI has a reference to a single Breakout object (the only model reference allowed).
 - Class Assets handles mappings of objects and events to images and sounds.
