@@ -11,7 +11,7 @@ import static breakout.model.Breakout.GAME_WIDTH;
 
 public class Ball implements IPositionable {
 
-    // Properties
+    // Properties - not final!!
     private double x, y;          // Position
     private double width, height; // Dimensions
 
@@ -47,4 +47,13 @@ public class Ball implements IPositionable {
 
     // endregion
 
+    // region SETTERS
+    public void setX(double x) { this.x = x; }
+    public void setY(double y) { this.y = y; }
+    // endregion
+
+    // region UTILITY METHODS
+    public double maxXExtendable(double windowWidth) { return windowWidth - width; }
+    public double maxYExtendable(double windowHeight) { return windowHeight - width; }
+    // endregion
 }

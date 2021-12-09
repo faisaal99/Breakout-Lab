@@ -22,31 +22,56 @@ public class Breakout {
     private int nBalls = 5;
     int playerPoints;
 
+    Ball b;
+
     // TODO Constructor that accepts all objects needed for the model
     public Breakout() {
-
+        b = new Ball(50, 10, 20, 20);
     }
 
     // --------  Game Logic -------------
 
     private long timeForLastHit;         // To avoid multiple collisions
-
+    double dX = 3;
+    double dY = 1;
     public void update(long now) {
         // TODO  Main game loop, start functional decomposition from here
 
+
+
+        if (isCollision(b.getX(), dX, b.maxXExtendable(GAME_WIDTH)))
+            dX *= -1;
+
+        if (isCollision(b.getY(), dY, b.maxYExtendable(GAME_HEIGHT)))
+            dY *= -1;
+
+        b.setX(b.getX() + dX);
+        b.setY(b.getY() + dY);
     }
 
     // ----- Helper methods--------------
 
-    // Used for functional decomposition
+    double clamp(double value, double min, double max) {
+        if (value > max)
+            return max;
+        else if (value < min)
+            return min;
 
+        return value;
+    }
+
+    boolean isCollision(double current, double delta, double max) {
+        double newPos = current + delta;
+
+        return newPos < 0 || newPos > max;
+    }
 
 
     // --- Used by GUI  ------------------------
 
     public List<IPositionable> getPositionables() {
         List<IPositionable> items = new ArrayList<>();
-        items.add(new Ball(10, 10, 20, 20));
+        items.add(b);
         return items;
     }
 
