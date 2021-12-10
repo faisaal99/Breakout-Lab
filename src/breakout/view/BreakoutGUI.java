@@ -108,10 +108,10 @@ public class BreakoutGUI extends Application implements IEventHandler {
 
     // Create all walls
     private List<Wall> getWalls() {
-        Wall left = null;             // TODO
-        Wall top = null;               //TODO
-        Wall right = null;             //TODO
-        return Arrays.asList(left, top, right);
+        Wall left = new Wall(0, 0, Wall.Dir.VERTICAL);
+        Wall top = new Wall(0, 0, Wall.Dir.HORIZONTAL);
+        Wall right = new Wall(0, 0, Wall.Dir.HORIZONTAL);
+        return Arrays.asList(left, top,right);
     }
 
     // Create the formation of bricks

@@ -23,6 +23,10 @@ public class Ball implements IPositionable {
         this.height = height;
     }
 
+    public Ball(double x, double y) {
+        this(x, y, 20, 20);
+    }
+
     // region IMPLEMENTED METHODS
 
     @Override
@@ -55,5 +59,10 @@ public class Ball implements IPositionable {
     // region UTILITY METHODS
     public double maxXExtendable(double windowWidth) { return windowWidth - width; }
     public double maxYExtendable(double windowHeight) { return windowHeight - width; }
+
+    public boolean hit(IPositionable p) {
+        // TODO
+        return true;
+    }
     // endregion
 }

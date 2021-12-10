@@ -18,10 +18,10 @@ public class Test {
 
     void test() {
 
-        //Ball b = new Ball(4,5 ); // Create object (just an example)
+        Ball b = new Ball(4,5); // Create object (just an example)
 
-        //Brick br = new Brick(4, 5 );
-        //b.hit(br) == true;
+        Brick br = new Brick(4, 5);
+        out.println(b.hit(br));
 
 
         //out.println( b.doIt() == 5);     // Call methods and check

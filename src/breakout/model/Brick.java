@@ -21,6 +21,10 @@ public class Brick implements IPositionable {
         this.height = height;
     }
 
+    public Brick(double x, double y) {
+        this(x, y, 30, 10);
+    }
+
     // region IMPLEMENTED METHODS
     @Override
     public double getX() {

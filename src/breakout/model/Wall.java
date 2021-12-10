@@ -9,29 +9,38 @@ public class Wall implements IPositionable {
         HORIZONTAL, VERTICAL;
     }
 
+    // Properties
+    private final Dir direction;
+    private final double x, y;
+    private final double width = 0, height = 0;
+
     // Constructor
-    // TODO
+    public Wall(double x, double y, Dir direction) {
+        this.x = x;
+        this.y = y;
+        this.direction = direction;
+    }
 
     // region IMPLEMENTED METHODS
 
     @Override
     public double getX() {
-        return 0;
+        return x;
     }
 
     @Override
     public double getY() {
-        return 0;
+        return y;
     }
 
     @Override
     public double getWidth() {
-        return 0;
+        return width;
     }
 
     @Override
     public double getHeight() {
-        return 0;
+        return height;
     }
 
     // endregion
