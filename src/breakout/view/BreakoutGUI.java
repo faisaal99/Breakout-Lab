@@ -46,33 +46,38 @@ public class BreakoutGUI extends Application implements IEventHandler {
 
     // ------- Keyboard events ----------------------------------
 
+    // TODO Start moving the paddle
     private void keyPressed(KeyEvent event) {
         if (!running) {
             return;
         }
+
+        // TODO Move the paddle here
         KeyCode kc = event.getCode();
         switch (kc) {
             case LEFT:
-                // TODO
                 break;
             case RIGHT:
-                // TODO
                 break;
-            default:  // Nothing
+            default:
+                ; // Nothing to do here
         }
     }
 
+    // TODO I guess for stopping movement of paddle?
     private void keyReleased(KeyEvent event) {
         if (!running) {
             return;
         }
+
         KeyCode kc = event.getCode();
         switch (kc) {
-            case LEFT:        // No break, fall through
+            case LEFT:   // No break, fall through
             case RIGHT:
                 // TODO
                 break;
-            default: // Nothing
+            default:
+                ; // Nothing
         }
     }
 
@@ -85,12 +90,15 @@ public class BreakoutGUI extends Application implements IEventHandler {
 
         // --- Build the model -----
         // TODO Build the model (also: see methods below)
+        Ball b = new Ball(GAME_WIDTH / 2, GAME_HEIGHT / 2);
+        Paddle p = new Paddle(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 30);
+        List<Brick> bricks = getBricks(3, 5);
+        List<Wall> walls = getWalls();
 
+        breakout = new Breakout(b, p, walls, bricks);
 
         // Bind bricks to images
-        //bindBricks(bricks);  // TODO
-
-        breakout = new Breakout();
+        bindBricks(bricks);
 
         // Start game
         timer.start();
@@ -110,31 +118,38 @@ public class BreakoutGUI extends Application implements IEventHandler {
     private List<Wall> getWalls() {
         Wall left = new Wall(0, 0, Wall.Dir.VERTICAL);
         Wall top = new Wall(0, 0, Wall.Dir.HORIZONTAL);
-        Wall right = new Wall(0, 0, Wall.Dir.HORIZONTAL);
+        Wall right = new Wall(GAME_WIDTH, 0, Wall.Dir.VERTICAL);
+
         return Arrays.asList(left, top,right);
     }
 
     // Create the formation of bricks
     private List<Brick> getBricks(int nRows, int nCols) {
         List<Brick> bricks = new ArrayList<>();
+
         int bw = (int) BRICK_WIDTH;
         int bh = (int) BRICK_HEIGHT;
+
         int offset = 5;
         int points = 300;
+
         for (int y = 10 * offset; y < nRows * (bh + offset); y += bh + offset) {
             for (int x = offset - 2; x < nCols * (bw + offset); x += bw + offset) {
-                Brick b = null;     // TODO
+                Brick b = new Brick(x, y);
+                b.setPoints(points);
                 bricks.add(b);
             }
+
             points -= 100;
         }
+
         return bricks;
     }
 
     // Bind bricks to images
-    private void bindBricks(List<Brick> bricks) {   // TODO
-        /*for (Brick b : bricks) {
-            switch ( ... ) {
+    private void bindBricks(List<Brick> bricks) {
+        for (Brick b : bricks) {
+            switch (b.getPoints()) {
                 case 100:
                     assets.bind(b, assets.greenTile);
                     break;
@@ -147,17 +162,20 @@ public class BreakoutGUI extends Application implements IEventHandler {
                 default:
                     ;   // Nothing
             }
-        }*/
+        }
     }
 
     // -------- Event handling (events sent from model to GUI) -----------
 
     @Override
     public void onModelEvent(ModelEvent evt) {
-        if (evt.type == ModelEvent.Type.BALL_HIT_PADDLE) {
-           // TODO Play a sound
-        } else if (evt.type == ModelEvent.Type.BALL_HIT_BRICK) {
-            // TODO Play a sound
+        switch (evt.type) {
+            case BALL_HIT_PADDLE:
+                break; // TODO Play a sound
+            case BALL_HIT_BRICK:
+                break; // TODO Play a sound
+            case BALL_HIT_WALL: // This wasn't in the original code
+                break; // TODO Play a sound
         }
     }
 
@@ -167,6 +185,7 @@ public class BreakoutGUI extends Application implements IEventHandler {
     private void handleMenuLevels(ActionEvent e) {
         // OPTIONAL: You decide what to do!
         RadioMenuItem i = (RadioMenuItem) e.getSource();
+
         if (i.isSelected()) {
             out.println(i.getText());
         }
@@ -207,7 +226,7 @@ public class BreakoutGUI extends Application implements IEventHandler {
         fg.setFill(assets.colorFgText);
         fg.setFont(Font.font(14));
         fg.fillText("Points: " + breakout.getPlayerPoints(), 10, GAME_HEIGHT - 5);
-        fg.fillText("Balls Left: " + breakout.getnBalls(), 300, GAME_HEIGHT - 5);
+        fg.fillText("Balls Left: " + breakout.getNBalls(), 300, GAME_HEIGHT - 5);
     }
 
     private void renderBackground() {

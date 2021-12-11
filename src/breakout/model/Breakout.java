@@ -1,6 +1,10 @@
 package breakout.model;
 
 
+import breakout.event.EventBus;
+import breakout.event.IEventHandler;
+import breakout.event.ModelEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,66 +16,59 @@ import java.util.List;
  *  NOTE: Nothing visual here
  *
  */
-public class Breakout {
+public class Breakout implements IEventHandler {
 
     public static final double GAME_WIDTH = 400;
     public static final double GAME_HEIGHT = 400;
     public static final double BALL_SPEED_FACTOR = 1.05; // Increase ball speed
-    public static final long SEC = 1_000_000_000;  // Nanoseconds used by JavaFX
+    public static final long SEC = 1_000_000_000;        // Nanoseconds used by JavaFX
 
     private int nBalls = 5;
     int playerPoints;
 
-    Ball b;
+    // All objects needed for the model
+    Ball ball;
+    Paddle paddle;
+    List<Wall> walls;
+    List<Brick> bricks;
+
+
 
     // TODO Constructor that accepts all objects needed for the model
-    public Breakout() {
-        b = new Ball(50, 10, 20, 20);
+    // TODO -> THAT WOULD BE : Ball | Brick | Paddle | Wall
+    public Breakout(Ball ball, Paddle paddle, List<Wall> walls, List<Brick> bricks) {
+        // TODO
+        this.ball = ball;
+        this.paddle = paddle;
+        this.walls = walls;
+        this.bricks = bricks;
+
+        // Register for events from BreakoutGUI
+        EventBus.INSTANCE.register(this);
     }
 
-    // --------  Game Logic -------------
+    // region  GAME LOGIC
 
-    private long timeForLastHit;         // To avoid multiple collisions
-    double dX = 3;
-    double dY = 1;
+    // To avoid multiple collisions
+    private long timeForLastHit;
+
     public void update(long now) {
         // TODO  Main game loop, start functional decomposition from here
 
-
-
-        if (isCollision(b.getX(), dX, b.maxXExtendable(GAME_WIDTH)))
-            dX *= -1;
-
-        if (isCollision(b.getY(), dY, b.maxYExtendable(GAME_HEIGHT)))
-            dY *= -1;
-
-        b.setX(b.getX() + dX);
-        b.setY(b.getY() + dY);
     }
 
-    // ----- Helper methods--------------
+    // endregion
 
-    double clamp(double value, double min, double max) {
-        if (value > max)
-            return max;
-        else if (value < min)
-            return min;
-
-        return value;
-    }
-
-    boolean isCollision(double current, double delta, double max) {
-        double newPos = current + delta;
-
-        return newPos < 0 || newPos > max;
-    }
-
-
-    // --- Used by GUI  ------------------------
+    // region USED BY -> GUI
 
     public List<IPositionable> getPositionables() {
         List<IPositionable> items = new ArrayList<>();
-        items.add(b);
+
+        items.addAll(walls);
+        items.addAll(bricks);
+        items.add(ball);
+        items.add(paddle);
+
         return items;
     }
 
@@ -79,11 +76,14 @@ public class Breakout {
         return playerPoints;
     }
 
-    public int getnBalls() {
+    public int getNBalls() {
         return nBalls;
     }
 
+    // endregion
 
-
-
+    @Override
+    public void onModelEvent(ModelEvent me) {
+        System.out.println("Event occurred");
+    }
 }

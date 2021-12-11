@@ -5,7 +5,6 @@ import static breakout.model.Breakout.GAME_WIDTH;
 
 /*
  * A Paddle for the Breakout game
- *
  */
 public class Paddle implements IPositionable {
 
@@ -13,30 +12,46 @@ public class Paddle implements IPositionable {
     public static final double PADDLE_HEIGHT = 10;
     public static final double PADDLE_SPEED = 5;
 
+    // Properties
+    private double x, y;
+    private final double width, height;
+
     // Constructor
-    // TODO
+    public Paddle(double x, double y) {
+        this.x = x;
+        this.y = y;
+        width = PADDLE_WIDTH;
+        height = PADDLE_HEIGHT;
+    }
 
     // region IMPLEMENTED METHODS
 
     @Override
     public double getX() {
-        return 0;
+        return x;
     }
 
     @Override
     public double getY() {
-        return 0;
+        return y;
     }
 
     @Override
     public double getWidth() {
-        return 0;
+        return width;
     }
 
     @Override
     public double getHeight() {
-        return 0;
+        return height;
     }
+
+    // endregion
+
+    // region SETTERS
+
+    public void setX(double x) { this.x = x; }
+    public void setY(double y) { this.y = y; }
 
     // endregion
 }

@@ -12,8 +12,8 @@ import static breakout.model.Breakout.GAME_WIDTH;
 public class Ball implements IPositionable {
 
     // Properties - not final!!
-    private double x, y;          // Position
-    private double width, height; // Dimensions
+    private double x, y;                // Position
+    private final double width, height; // Dimensions
 
     // Constructor
     public Ball(double x, double y, double width, double height) {
@@ -57,12 +57,15 @@ public class Ball implements IPositionable {
     // endregion
 
     // region UTILITY METHODS
+
+    // TODO These two methods are for experimentation and are most likely disappearing
     public double maxXExtendable(double windowWidth) { return windowWidth - width; }
     public double maxYExtendable(double windowHeight) { return windowHeight - width; }
 
+    // TODO Hit detection
     public boolean hit(IPositionable p) {
-        // TODO
         return true;
     }
+
     // endregion
 }
