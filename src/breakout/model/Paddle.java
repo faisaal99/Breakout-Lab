@@ -1,5 +1,7 @@
 package breakout.model;
 
+import breakout.collision.AABB;
+
 import static breakout.model.Breakout.GAME_HEIGHT;
 import static breakout.model.Breakout.GAME_WIDTH;
 
@@ -15,6 +17,7 @@ public class Paddle implements IPositionable {
     // Properties
     private double x, y;
     private final double width, height;
+    private AABB aabb;
 
     // Constructor
     public Paddle(double x, double y) {
@@ -22,6 +25,8 @@ public class Paddle implements IPositionable {
         this.y = y;
         width = PADDLE_WIDTH;
         height = PADDLE_HEIGHT;
+
+        aabb = new AABB(x, y, width, height);
     }
 
     // region IMPLEMENTED METHODS
@@ -48,7 +53,9 @@ public class Paddle implements IPositionable {
 
     // endregion
 
-    // region SETTERS
+    // region GETTERS N SETTERS
+
+    public AABB getAABB() { return aabb; }
 
     public void setX(double x) { this.x = x; }
     public void setY(double y) { this.y = y; }

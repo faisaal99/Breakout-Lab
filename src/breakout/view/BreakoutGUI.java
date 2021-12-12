@@ -27,6 +27,9 @@ import static breakout.model.Breakout.GAME_HEIGHT;
 import static breakout.model.Breakout.GAME_WIDTH;
 import static breakout.model.Brick.BRICK_HEIGHT;
 import static breakout.model.Brick.BRICK_WIDTH;
+import static breakout.model.Breakout.PaddleMovement.MOVE_LEFT;
+import static breakout.model.Breakout.PaddleMovement.MOVE_RIGHT;
+import static breakout.model.Breakout.PaddleMovement.STOP_PADDLE;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 
@@ -46,25 +49,24 @@ public class BreakoutGUI extends Application implements IEventHandler {
 
     // ------- Keyboard events ----------------------------------
 
-    // TODO Start moving the paddle
     private void keyPressed(KeyEvent event) {
         if (!running) {
             return;
         }
 
-        // TODO Move the paddle here
         KeyCode kc = event.getCode();
         switch (kc) {
             case LEFT:
+                breakout.movePaddle(MOVE_LEFT);
                 break;
             case RIGHT:
+                breakout.movePaddle(MOVE_RIGHT);
                 break;
             default:
                 ; // Nothing to do here
         }
     }
 
-    // TODO I guess for stopping movement of paddle?
     private void keyReleased(KeyEvent event) {
         if (!running) {
             return;
@@ -74,10 +76,7 @@ public class BreakoutGUI extends Application implements IEventHandler {
         switch (kc) {
             case LEFT:   // No break, fall through
             case RIGHT:
-                // TODO
-                break;
-            default:
-                ; // Nothing
+                breakout.movePaddle(STOP_PADDLE);
         }
     }
 
@@ -180,7 +179,7 @@ public class BreakoutGUI extends Application implements IEventHandler {
     }
 
 
-    // Optional
+    // TODO Optional
     // Program will jump to here when clicking menu item
     private void handleMenuLevels(ActionEvent e) {
         // OPTIONAL: You decide what to do!

@@ -1,6 +1,7 @@
 package breakout.model;
 
 
+import breakout.collision.Shift;
 import breakout.event.EventBus;
 import breakout.event.IEventHandler;
 import breakout.event.ModelEvent;
@@ -16,15 +17,19 @@ import java.util.List;
  *  NOTE: Nothing visual here
  *
  */
-public class Breakout implements IEventHandler {
+public class Breakout {
+
+    public enum PaddleMovement {MOVE_LEFT, MOVE_RIGHT, STOP_PADDLE}
 
     public static final double GAME_WIDTH = 400;
     public static final double GAME_HEIGHT = 400;
     public static final double BALL_SPEED_FACTOR = 1.05; // Increase ball speed
     public static final long SEC = 1_000_000_000;        // Nanoseconds used by JavaFX
 
-    private int nBalls = 5;
-    int playerPoints;
+    // Properties
+    private int nBalls = 5; // Number of available balls
+    int playerPoints;       // Self-explanatory
+    int paddleVel = 0;      // Paddle velocity (negative value means a left-ward direction)
 
     // All objects needed for the model
     Ball ball;
@@ -32,19 +37,11 @@ public class Breakout implements IEventHandler {
     List<Wall> walls;
     List<Brick> bricks;
 
-
-
-    // TODO Constructor that accepts all objects needed for the model
-    // TODO -> THAT WOULD BE : Ball | Brick | Paddle | Wall
     public Breakout(Ball ball, Paddle paddle, List<Wall> walls, List<Brick> bricks) {
-        // TODO
         this.ball = ball;
         this.paddle = paddle;
         this.walls = walls;
         this.bricks = bricks;
-
-        // Register for events from BreakoutGUI
-        EventBus.INSTANCE.register(this);
     }
 
     // region  GAME LOGIC
@@ -54,8 +51,39 @@ public class Breakout implements IEventHandler {
 
     public void update(long now) {
         // TODO  Main game loop, start functional decomposition from here
+        Ball tempBall = (Ball) Shift.by(ball, 10, 10);
+        assert tempBall != null;
 
+        // If a collision occurs with the paddle
+        if (tempBall.getAABB().isColliding(paddle.getAABB())) {
+
+        }
+
+        updatePaddleMovement();
     }
+
+    private void updatePaddleMovement() {
+        paddle.setX(paddle.getX() + paddleVel);
+    }
+
+    public void movePaddle(PaddleMovement pm) {
+        switch (pm) {
+            case MOVE_LEFT:
+                paddleVel = -5;
+                break;
+            case MOVE_RIGHT:
+                paddleVel = 5;
+                break;
+            case STOP_PADDLE:
+                paddleVel = 0;
+        }
+    }
+
+    // endregion
+
+    // region COLLISION
+
+    // TODO Collision detection methods here I guess
 
     // endregion
 
@@ -81,9 +109,4 @@ public class Breakout implements IEventHandler {
     }
 
     // endregion
-
-    @Override
-    public void onModelEvent(ModelEvent me) {
-        System.out.println("Event occurred");
-    }
 }

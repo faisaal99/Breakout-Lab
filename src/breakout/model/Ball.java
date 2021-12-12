@@ -1,9 +1,6 @@
 package breakout.model;
 
-import java.util.Random;
-
-import static breakout.model.Breakout.GAME_HEIGHT;
-import static breakout.model.Breakout.GAME_WIDTH;
+import breakout.collision.AABB;
 
 /*
  *    A Ball for the Breakout game
@@ -11,20 +8,19 @@ import static breakout.model.Breakout.GAME_WIDTH;
 
 public class Ball implements IPositionable {
 
-    // Properties - not final!!
+    // Properties
     private double x, y;                // Position
     private final double width, height; // Dimensions
+    private final AABB aabb;            // Used for collision detection
 
     // Constructor
-    public Ball(double x, double y, double width, double height) {
+    public Ball(double x, double y) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
-    }
+        width = 20;
+        height = 20;
 
-    public Ball(double x, double y) {
-        this(x, y, 20, 20);
+        aabb = new AABB(x, y, width, height);
     }
 
     // region IMPLEMENTED METHODS
@@ -51,9 +47,13 @@ public class Ball implements IPositionable {
 
     // endregion
 
-    // region SETTERS
+    // region GETTERS N SETTERS
+
+    public AABB getAABB() { return aabb; }
+
     public void setX(double x) { this.x = x; }
     public void setY(double y) { this.y = y; }
+
     // endregion
 
     // region UTILITY METHODS
@@ -64,6 +64,7 @@ public class Ball implements IPositionable {
 
     // TODO Hit detection
     public boolean hit(IPositionable p) {
+
         return true;
     }
 
