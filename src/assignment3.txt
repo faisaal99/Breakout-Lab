@@ -82,17 +82,17 @@ Tips:
 Workflow
 --------
 Inspect everything.
-- See //TODO comments for where to code
+- See // TODO comments for where to code
 - Some classes are finished, see comments in code (= "Nothing to do here").
 
-1.  Let model for now consist of only a Breakout and a Ball object (= model_v1).
+[DONE] 1.  Let model for now consist of only a Breakout and a Ball object (= model_v1).
     Add some sensible instance variables for the Ball (this is trial and error).
 
-2.  In BreakoutGUI > newGame(). Try to build the model_v1. Pass in dependencies
+[DONE] 2.  In BreakoutGUI > newGame(). Try to build the model_v1. Pass in dependencies
     of other object using constructors. Add constructors as needed. Debug to
     inspect the model. Are the objects there and connected?
 
-3.  Try to make the ball appear on the screen. The method getPositionables
+[DONE] 3. Try to make the ball appear on the screen. The method getPositionables
     in Breakout must be implemented. The GUI will periodically call the
     method to get a list of objects to draw (all must implement positionable).
 

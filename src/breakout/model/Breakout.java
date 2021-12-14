@@ -1,6 +1,7 @@
 package breakout.model;
 
 
+import breakout.collision.AABB;
 import breakout.collision.Shift;
 import breakout.event.EventBus;
 import breakout.event.IEventHandler;
@@ -51,21 +52,32 @@ public class Breakout {
 
     public void update(long now) {
         // TODO  Main game loop, start functional decomposition from here
-        Ball tempBall = (Ball) Shift.by(ball, 10, 10);
-        assert tempBall != null;
 
-        // If a collision occurs with the paddle
-        if (tempBall.getAABB().isColliding(paddle.getAABB())) {
-
-        }
+        // Do some kind of collision detection
 
         updatePaddleMovement();
+
+        collisionDetection();
+        moveBall();
     }
 
+    // Updates the x-value of the paddle, after delta is set.
     private void updatePaddleMovement() {
         paddle.setX(paddle.getX() + paddleVel);
     }
 
+    // Moves the ball in  the given dx and dy
+    private void moveBall() {
+        double x = ball.getX();
+        double y = ball.getY();
+        double dx = ball.getDx();
+        double dy = ball.getDy();
+
+        ball.setX(x + dx);
+        ball.setY(y + dy);
+    }
+
+    // Called from BreakoutGUI
     public void movePaddle(PaddleMovement pm) {
         switch (pm) {
             case MOVE_LEFT:
@@ -79,11 +91,35 @@ public class Breakout {
         }
     }
 
+    // When the ball leaves the bottom of the screen, this should be called.
+    private void lowerPoints() {
+        nBalls--;
+    }
     // endregion
 
     // region COLLISION
 
-    // TODO Collision detection methods here I guess
+    // TODO Collision detection methods
+    private void collisionDetection() {
+
+        // Check collision with all walls
+        for (Wall w : walls) {
+            if (AABB.isCollidingWithWall(ball, w)) {
+                System.out.println("Collision occurred");
+                Wall.Dir dir = w.getDirection();
+
+                if (dir == Wall.Dir.HORIZONTAL)
+                    ball.setDx(ball.getDx() * -1);
+                else
+                    ball.setDy(ball.getDy() * -1);
+
+                break;
+            }
+        }
+
+        // Check collision with Bricks
+        // TODO ...
+    }
 
     // endregion
 

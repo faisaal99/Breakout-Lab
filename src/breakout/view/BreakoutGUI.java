@@ -91,7 +91,7 @@ public class BreakoutGUI extends Application implements IEventHandler {
         // TODO Build the model (also: see methods below)
         Ball b = new Ball(GAME_WIDTH / 2, GAME_HEIGHT / 2);
         Paddle p = new Paddle(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 30);
-        List<Brick> bricks = getBricks(3, 5);
+        List<Brick> bricks = getBricks(6, 16);
         List<Wall> walls = getWalls();
 
         breakout = new Breakout(b, p, walls, bricks);
@@ -115,8 +115,8 @@ public class BreakoutGUI extends Application implements IEventHandler {
 
     // Create all walls
     private List<Wall> getWalls() {
-        Wall left = new Wall(0, 0, Wall.Dir.VERTICAL);
-        Wall top = new Wall(0, 0, Wall.Dir.HORIZONTAL);
+        Wall left = new Wall(-10, 0, Wall.Dir.VERTICAL);
+        Wall top = new Wall(0, -10, Wall.Dir.HORIZONTAL);
         Wall right = new Wall(GAME_WIDTH, 0, Wall.Dir.VERTICAL);
 
         return Arrays.asList(left, top,right);
@@ -211,7 +211,7 @@ public class BreakoutGUI extends Application implements IEventHandler {
 
     private Assets assets;
     // For debugging, see render()
-    private boolean renderDebug = false; //true;
+    private boolean renderDebug = true; //true;
 
     private void render() {
         fg.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);    // Clear everything
