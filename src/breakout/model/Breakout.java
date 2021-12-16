@@ -119,6 +119,28 @@ public class Breakout {
 
     private void bounceBallOnPaddle() {
         ball.setDy(ball.getDy() * -1);
+
+        final double MAX_ANGLE = Math.toRadians(20);
+
+        double mx = paddle.getX() + paddle.getWidth() / 2.0;
+        double px = ball.getX() + ball.getWidth() / 2.0;
+        double mxDiffPx = px - mx;
+        mxDiffPx = clamp(mxDiffPx, paddle.getWidth() / 2);
+
+        double percent = mxDiffPx / (paddle.getWidth() / 2.0);
+        double deltaAngle = Math.PI / 2 - MAX_ANGLE;
+        double newAngle = Math.PI / 2 - deltaAngle * percent;
+
+        ball.setNewVelocityDirection(newAngle);
+    }
+
+    private double clamp(double value, double limit) {
+        if (value > limit)
+            return limit;
+        else if (value < -limit)
+            return -limit;
+
+        return value;
     }
 
     private void setCollisionTimer() {

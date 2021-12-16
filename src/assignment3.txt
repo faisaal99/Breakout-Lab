@@ -96,10 +96,10 @@ Inspect everything.
     in Breakout must be implemented. The GUI will periodically call the
     method to get a list of objects to draw (all must implement positionable).
 
-4.  When above working try to get the ball to move. Which class should be
+[DONE] 4.  When above working try to get the ball to move. Which class should be
     responsible for the movement? Work with the ball and method update in Breakout.
 
-5.  Start with collection detection. First, add walls. Extend model_v1 with
+[DONE] 5.  Start with collision detection. First, add walls. Extend model_v1 with
     Wall-objects (= model_v2). Build the new model as before (just add Walls).
     Who will handle the collision detection (who has the data)?
 
@@ -109,9 +109,9 @@ Inspect everything.
     for many kind of objects to the base classes.
     NOTE: Each class should have a well-defined answer.
 
-7.  Add a Paddle to the model_v2 (= model_v3), make it show up on screen.
+[DONE] 7.  Add a Paddle to the model_v2 (= model_v3), make it show up on screen.
 
-8.  Make it possible to move the paddle. The keyPressed/Released methods in
+[DONE] 8.  Make it possible to move the paddle. The keyPressed/Released methods in
     BreakoutGUI should call the breakout instance to modify the paddle speed
     (and direction i.e. speed is +, 0 , -). Add methods as needed.
     When it's possible to move the paddle, add collision detection for paddle.

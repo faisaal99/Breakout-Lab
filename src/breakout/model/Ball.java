@@ -1,10 +1,9 @@
 package breakout.model;
 
-import breakout.collision.AABB;
-import static breakout.model.Breakout.GAME_WIDTH;
-import static breakout.model.Breakout.GAME_HEIGHT;
-
 import java.util.Random;
+
+import static breakout.model.Breakout.GAME_HEIGHT;
+import static breakout.model.Breakout.GAME_WIDTH;
 
 /*
  *    A Ball for the Breakout game
@@ -19,6 +18,7 @@ public class Ball implements IPositionable {
     private double x, y;                // Position
     private final double width, height; // Dimensions
     private double dx, dy;              // The delta to move in x and y
+    private double speed = 2;           // The speed of the ball
 
     // Constructor
     public Ball() {
@@ -27,7 +27,7 @@ public class Ball implements IPositionable {
 
         r = new Random();
 
-        randomPosAndRot();
+        startingRot();
     }
 
     // region IMPLEMENTED METHODS
@@ -82,24 +82,25 @@ public class Ball implements IPositionable {
     }
 
     // When spawned, pick a random location and rotation to begin
-    public void randomPosAndRot() {
-        // Choosing random location to spawn
-        final int MARGIN_WALLS = 10; // The minimum margin to keep from each side
+    public void startingRot() {
         final int DISTANCE_FROM_BOTTOM = 50;
-        int xPos = r.nextInt((int) (GAME_WIDTH - 2*MARGIN_WALLS - width)) + MARGIN_WALLS;
-        int yPos = (int) GAME_HEIGHT - DISTANCE_FROM_BOTTOM;
+        final double MAX_ANGLE_RANGE = Math.toRadians(120);
 
-        x = xPos;
-        y = yPos;
+        x = GAME_WIDTH / 2 - width;
+        y = GAME_HEIGHT - DISTANCE_FROM_BOTTOM;
 
-        // Choosing random rotation | It will always point upward
-        final int BEGIN_X = 2;
-        final int BEGIN_Y = 2;
-        dx = r.nextInt(BEGIN_X) + 1;
-        if (r.nextBoolean()) // Randomly select left or right movement
-            dx *= -1;
+        double angle = r.nextDouble(MAX_ANGLE_RANGE);
+        angle += (Math.PI - angle) / 2;
 
-        dy = (r.nextInt(BEGIN_Y) + 1) * -1; // Multiply with -1 to point it upward
+        dx = speed * Math.cos(angle);
+        dy = speed * Math.sin(angle);
+        dy *= -1;
+    }
+
+    public void setNewVelocityDirection(double angle) {
+        dx = speed * Math.cos(angle);
+        dy = speed * Math.sin(angle);
+        dy *= -1;
     }
 
     // endregion
