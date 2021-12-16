@@ -18,7 +18,8 @@ public class Ball implements IPositionable {
     private double x, y;                // Position
     private final double width, height; // Dimensions
     private double dx, dy;              // The delta to move in x and y
-    private double speed = 2;           // The speed of the ball
+    private double mSpeed = 2;          // The speed of the ball
+    private double mAngle = 0;          // The angle of the vector
 
     // Constructor
     public Ball() {
@@ -92,15 +93,25 @@ public class Ball implements IPositionable {
         double angle = r.nextDouble(MAX_ANGLE_RANGE);
         angle += (Math.PI - angle) / 2;
 
-        dx = speed * Math.cos(angle);
-        dy = speed * Math.sin(angle);
+        mAngle = angle;
+
+        dx = mSpeed * Math.cos(angle);
+        dy = mSpeed * Math.sin(angle);
         dy *= -1;
     }
 
     public void setNewVelocityDirection(double angle) {
-        dx = speed * Math.cos(angle);
-        dy = speed * Math.sin(angle);
+        mAngle = angle;
+
+        dx = mSpeed * Math.cos(angle);
+        dy = mSpeed * Math.sin(angle);
         dy *= -1;
+    }
+
+    public void increaseSpeedByFactor(double factor) {
+        mSpeed *= factor;
+        dx *= factor;
+        dy *= factor;
     }
 
     // endregion

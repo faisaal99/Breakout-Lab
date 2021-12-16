@@ -92,7 +92,7 @@ public class Breakout {
 
     // region COLLISION
 
-    // TODO Collision detection methods
+    // Checks collision with walls, the paddle and all the bricks in the scene
     private void collisionDetection() {
 
         // Check collision with all walls
@@ -110,30 +110,57 @@ public class Breakout {
             }
         }
 
-        // Check collision with Pad
+        // Check collision with paddle
         if (AABB.isCollidingWithWall(ball, paddle)) {
             setCollisionTimer();
             bounceBallOnPaddle();
         }
+
+        Brick brickToRemove = null;
+        boolean isBrickCollision = false;
+
+        // Check collision with any brick
+        for (Brick b : bricks) {
+            if (AABB.isCollidingWithWall(ball, b)) {
+                setCollisionTimer();
+
+                ball.setDy(ball.getDy() * -1);
+                ball.increaseSpeedByFactor(BALL_SPEED_FACTOR);
+
+                brickToRemove = b;
+                isBrickCollision = true;
+
+                break;
+            }
+        }
+
+        if (isBrickCollision) {
+            bricks.remove(brickToRemove);
+        }
     }
 
+    // When the ball bounces on the paddle,
+    // determine which direction the ball should move
+    // based on where on the paddle the ball hit
     private void bounceBallOnPaddle() {
         ball.setDy(ball.getDy() * -1);
 
         final double MAX_ANGLE = Math.toRadians(20);
+        final double HALF_PADDLE_WIDTH = paddle.getWidth() / 2.0;
 
-        double mx = paddle.getX() + paddle.getWidth() / 2.0;
-        double px = ball.getX() + ball.getWidth() / 2.0;
-        double mxDiffPx = px - mx;
-        mxDiffPx = clamp(mxDiffPx, paddle.getWidth() / 2);
+        double mx = paddle.getX() + HALF_PADDLE_WIDTH;   // Middle point
+        double px = ball.getX() + ball.getWidth() / 2.0; // Hit point
+        double mxDiffPx = px - mx;                       // Difference between points
+        mxDiffPx = clamp(mxDiffPx, HALF_PADDLE_WIDTH);   // Clamp the value
 
-        double percent = mxDiffPx / (paddle.getWidth() / 2.0);
+        double percentOffCenter = mxDiffPx / HALF_PADDLE_WIDTH;
         double deltaAngle = Math.PI / 2 - MAX_ANGLE;
-        double newAngle = Math.PI / 2 - deltaAngle * percent;
+        double newAngle = Math.PI / 2 - deltaAngle * percentOffCenter;
 
         ball.setNewVelocityDirection(newAngle);
     }
 
+    // Clamps the value within the limit's positive and negative value
     private double clamp(double value, double limit) {
         if (value > limit)
             return limit;
@@ -143,10 +170,12 @@ public class Breakout {
         return value;
     }
 
+    // Set the timer for next collision
     private void setCollisionTimer() {
         timeForLastHit = 98_000_000_000L;
     }
 
+    // Lower the remaining time
     private void updateTimer(long now) {
         long delta = now - lastNowValue;
         timeForLastHit -= delta;
