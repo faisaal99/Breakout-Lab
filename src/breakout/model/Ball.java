@@ -18,17 +18,12 @@ public class Ball implements IPositionable {
     // Properties
     private double x, y;                // Position
     private final double width, height; // Dimensions
-    private final AABB aabb;            // Used for collision detection
     private double dx, dy;              // The delta to move in x and y
 
     // Constructor
-    public Ball(double x, double y) {
-        this.x = x;
-        this.y = y;
+    public Ball() {
         width = 15;
         height = 15;
-
-        aabb = new AABB(x, y, width, height);
 
         r = new Random();
 
@@ -61,8 +56,6 @@ public class Ball implements IPositionable {
 
     // region GETTERS N SETTERS
 
-    public AABB getAABB() { return aabb; }
-
     public void setX(double x) { this.x = x; }
     public void setY(double y) { this.y = y; }
 
@@ -76,10 +69,16 @@ public class Ball implements IPositionable {
 
     // region UTILITY METHODS
 
-    // TODO Hit detection
-    public boolean hit(IPositionable p) {
+    // Moves the ball
+    public void moveBall() {
+        x += dx;
+        y += dy;
+    }
 
-        return true;
+    // Set the delta of the ball
+    public void setMoveDelta(double dx, double dy) {
+        this.dx = dx;
+        this.dy = dy;
     }
 
     // When spawned, pick a random location and rotation to begin

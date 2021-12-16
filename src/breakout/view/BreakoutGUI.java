@@ -16,6 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -30,6 +31,7 @@ import static breakout.model.Brick.BRICK_WIDTH;
 import static breakout.model.Breakout.PaddleMovement.MOVE_LEFT;
 import static breakout.model.Breakout.PaddleMovement.MOVE_RIGHT;
 import static breakout.model.Breakout.PaddleMovement.STOP_PADDLE;
+import static breakout.model.Paddle.PADDLE_WIDTH;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 
@@ -62,6 +64,9 @@ public class BreakoutGUI extends Application implements IEventHandler {
             case RIGHT:
                 breakout.movePaddle(MOVE_RIGHT);
                 break;
+            case SPACE:
+                renderDebug = !renderDebug;
+                break;
             default:
                 ; // Nothing to do here
         }
@@ -89,8 +94,8 @@ public class BreakoutGUI extends Application implements IEventHandler {
 
         // --- Build the model -----
         // TODO Build the model (also: see methods below)
-        Ball b = new Ball(GAME_WIDTH / 2, GAME_HEIGHT / 2);
-        Paddle p = new Paddle(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 30);
+        Ball b = new Ball();
+        Paddle p = new Paddle(GAME_WIDTH / 2 - PADDLE_WIDTH, GAME_HEIGHT - 30);
         List<Brick> bricks = getBricks(6, 16);
         List<Wall> walls = getWalls();
 
@@ -211,10 +216,12 @@ public class BreakoutGUI extends Application implements IEventHandler {
 
     private Assets assets;
     // For debugging, see render()
-    private boolean renderDebug = true; //true;
+    private boolean renderDebug = false; //true;
 
     private void render() {
         fg.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);    // Clear everything
+        fg.setStroke(Paint.valueOf("fff")); // White stroke
+
         for (IPositionable d : breakout.getPositionables()) {
             if (renderDebug) {
                 fg.strokeRect(d.getX(), d.getY(), d.getWidth(), d.getHeight());
@@ -222,6 +229,7 @@ public class BreakoutGUI extends Application implements IEventHandler {
                 fg.drawImage(assets.get(d), d.getX(), d.getY(), d.getWidth(), d.getHeight());
             }
         }
+
         fg.setFill(assets.colorFgText);
         fg.setFont(Font.font(14));
         fg.fillText("Points: " + breakout.getPlayerPoints(), 10, GAME_HEIGHT - 5);

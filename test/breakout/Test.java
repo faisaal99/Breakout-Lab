@@ -18,11 +18,7 @@ public class Test {
 
     void test() {
 
-        Ball b = new Ball(5,5); // Create object (just an example)
 
-        Brick br = new Brick(4, 5);
-        boolean x = b.getAABB().isColliding(br.getAABB());
-        out.println("isColliding: " + x);
 
         //out.println( b.doIt() == 5);     // Call methods and check
         //out.println( b.doOther() == 7);

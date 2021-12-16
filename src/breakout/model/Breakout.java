@@ -2,10 +2,6 @@ package breakout.model;
 
 
 import breakout.collision.AABB;
-import breakout.collision.Shift;
-import breakout.event.EventBus;
-import breakout.event.IEventHandler;
-import breakout.event.ModelEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,38 +39,35 @@ public class Breakout {
         this.paddle = paddle;
         this.walls = walls;
         this.bricks = bricks;
+
+        timeForLastHit = 0;
     }
 
     // region  GAME LOGIC
 
     // To avoid multiple collisions
     private long timeForLastHit;
+    private long lastNowValue = 0;
 
     public void update(long now) {
         // TODO  Main game loop, start functional decomposition from here
 
-        // Do some kind of collision detection
+        if (lastNowValue == 0)
+            lastNowValue = now;
+        else
+            updateTimer(now);
 
         updatePaddleMovement();
 
-        collisionDetection();
-        moveBall();
+        if (timeForLastHit <= 0)
+            collisionDetection();
+
+        ball.moveBall();
     }
 
     // Updates the x-value of the paddle, after delta is set.
     private void updatePaddleMovement() {
         paddle.setX(paddle.getX() + paddleVel);
-    }
-
-    // Moves the ball in  the given dx and dy
-    private void moveBall() {
-        double x = ball.getX();
-        double y = ball.getY();
-        double dx = ball.getDx();
-        double dy = ball.getDy();
-
-        ball.setX(x + dx);
-        ball.setY(y + dy);
     }
 
     // Called from BreakoutGUI
@@ -105,20 +98,39 @@ public class Breakout {
         // Check collision with all walls
         for (Wall w : walls) {
             if (AABB.isCollidingWithWall(ball, w)) {
-                System.out.println("Collision occurred");
-                Wall.Dir dir = w.getDirection();
+                setCollisionTimer();
 
+                Wall.Dir dir = w.getDirection();
                 if (dir == Wall.Dir.HORIZONTAL)
-                    ball.setDx(ball.getDx() * -1);
-                else
                     ball.setDy(ball.getDy() * -1);
+                else
+                    ball.setDx(ball.getDx() * -1);
 
                 break;
             }
         }
 
-        // Check collision with Bricks
-        // TODO ...
+        // Check collision with Pad
+        if (AABB.isCollidingWithWall(ball, paddle)) {
+            setCollisionTimer();
+            bounceBallOnPaddle();
+        }
+    }
+
+    private void bounceBallOnPaddle() {
+        ball.setDy(ball.getDy() * -1);
+    }
+
+    private void setCollisionTimer() {
+        timeForLastHit = 98_000_000_000L;
+    }
+
+    private void updateTimer(long now) {
+        long delta = now - lastNowValue;
+        timeForLastHit -= delta;
+
+        if (timeForLastHit < 0)
+            timeForLastHit = 0;
     }
 
     // endregion
