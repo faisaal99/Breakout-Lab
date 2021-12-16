@@ -9,56 +9,27 @@ import static breakout.model.Breakout.GAME_WIDTH;
  *    A Ball for the Breakout game
  */
 
-public class Ball implements IPositionable {
+public class Ball extends Drawable {
 
     // Util
     Random r;
 
     // Properties
-    private double x, y;                // Position
-    private final double width, height; // Dimensions
+    private static final double STARTING_SPEED = 3;
     private double dx, dy;              // The delta to move in x and y
-    private double mSpeed = 2;          // The speed of the ball
-    private double mAngle = 0;          // The angle of the vector
+    private double mSpeed;              // The speed of the ball
 
     // Constructor
     public Ball() {
-        width = 15;
-        height = 15;
+        super(0, 0, 15, 15);
 
         r = new Random();
+        mSpeed = STARTING_SPEED;
 
-        startingRot();
+        newRandomStartingRot();
     }
-
-    // region IMPLEMENTED METHODS
-
-    @Override
-    public double getX() {
-        return x;
-    }
-
-    @Override
-    public double getY() {
-        return y;
-    }
-
-    @Override
-    public double getWidth() {
-        return width;
-    }
-
-    @Override
-    public double getHeight() {
-        return height;
-    }
-
-    // endregion
 
     // region GETTERS N SETTERS
-
-    public void setX(double x) { this.x = x; }
-    public void setY(double y) { this.y = y; }
 
     public void setDx(double dx) { this.dx = dx; }
     public void setDy(double dy) { this.dy = dy; }
@@ -76,38 +47,31 @@ public class Ball implements IPositionable {
         y += dy;
     }
 
-    // Set the delta of the ball
-    public void setMoveDelta(double dx, double dy) {
-        this.dx = dx;
-        this.dy = dy;
-    }
-
     // When spawned, pick a random location and rotation to begin
-    public void startingRot() {
+    public void newRandomStartingRot() {
         final int DISTANCE_FROM_BOTTOM = 50;
         final double MAX_ANGLE_RANGE = Math.toRadians(120);
 
+        // Center of width, above the paddle
         x = GAME_WIDTH / 2 - width;
         y = GAME_HEIGHT - DISTANCE_FROM_BOTTOM;
 
+        // Random angle
         double angle = r.nextDouble(MAX_ANGLE_RANGE);
         angle += (Math.PI - angle) / 2;
 
-        mAngle = angle;
-
-        dx = mSpeed * Math.cos(angle);
-        dy = mSpeed * Math.sin(angle);
-        dy *= -1;
+        mSpeed = STARTING_SPEED;
+        setNewVelocityDirection(angle);
     }
 
+    // Set a new velocity direction to the given angle
     public void setNewVelocityDirection(double angle) {
-        mAngle = angle;
-
         dx = mSpeed * Math.cos(angle);
-        dy = mSpeed * Math.sin(angle);
-        dy *= -1;
+        dy = mSpeed * Math.sin(angle + Math.PI);
     }
 
+    // Change the speed of the ball
+    // >> factor = 1 doesn't change anything
     public void increaseSpeedByFactor(double factor) {
         mSpeed *= factor;
         dx *= factor;

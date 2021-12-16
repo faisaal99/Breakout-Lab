@@ -6,46 +6,16 @@ package breakout.model;
 
 import breakout.collision.AABB;
 
-public class Brick implements IPositionable {
+public class Brick extends Drawable {
 
     public static final double BRICK_WIDTH = 20;  // Default values, use in constructors, not directly
     public static final double BRICK_HEIGHT = 10;
 
-    private final double x, y;
-    private final double width, height;
-
     private int points;
 
     public Brick(double x, double y) {
-        this.x = x;
-        this.y = y;
-        this.width = BRICK_WIDTH;
-        this.height = BRICK_HEIGHT;
+        super(x, y, BRICK_WIDTH, BRICK_HEIGHT);
     }
-
-    // region IMPLEMENTED METHODS
-
-    @Override
-    public double getX() {
-        return x;
-    }
-
-    @Override
-    public double getY() {
-        return y;
-    }
-
-    @Override
-    public double getWidth() {
-        return width;
-    }
-
-    @Override
-    public double getHeight() {
-        return height;
-    }
-
-    // endregion
 
     // region GETTERS N SETTERS
 

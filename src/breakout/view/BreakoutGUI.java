@@ -20,6 +20,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.AudioSystem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -120,9 +121,9 @@ public class BreakoutGUI extends Application implements IEventHandler {
 
     // Create all walls
     private List<Wall> getWalls() {
-        Wall left = new Wall(-10, 0, Wall.Dir.VERTICAL);
-        Wall top = new Wall(0, -10, Wall.Dir.HORIZONTAL);
-        Wall right = new Wall(GAME_WIDTH, 0, Wall.Dir.VERTICAL);
+        Wall left = new Wall(-20, 0, 20, GAME_HEIGHT, Wall.Dir.VERTICAL);
+        Wall top = new Wall(0, -20, 0, 20, Wall.Dir.HORIZONTAL);
+        Wall right = new Wall(GAME_WIDTH, 0, 20, GAME_HEIGHT, Wall.Dir.VERTICAL);
 
         return Arrays.asList(left, top,right);
     }
@@ -175,11 +176,18 @@ public class BreakoutGUI extends Application implements IEventHandler {
     public void onModelEvent(ModelEvent evt) {
         switch (evt.type) {
             case BALL_HIT_PADDLE:
-                break; // TODO Play a sound
+
+                break; // TODO
             case BALL_HIT_BRICK:
-                break; // TODO Play a sound
+
+                break; // TODO
             case BALL_HIT_WALL: // This wasn't in the original code
-                break; // TODO Play a sound
+                break;
+            case GAME_OVER:
+                killGame();
+                break;
+            default:
+                ; // Nothing to do here
         }
     }
 

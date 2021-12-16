@@ -2,6 +2,8 @@ package breakout.model;
 
 
 import breakout.collision.AABB;
+import breakout.event.EventBus;
+import breakout.event.ModelEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +28,13 @@ public class Breakout {
     // Properties
     private int nBalls = 5; // Number of available balls
     int playerPoints;       // Self-explanatory
-    int paddleVel = 0;      // Paddle velocity (negative value means a left-ward direction)
+    double paddleVel = 0;   // Paddle velocity (negative value means a left-ward direction)
 
     // All objects needed for the model
-    Ball ball;
-    Paddle paddle;
-    List<Wall> walls;
-    List<Brick> bricks;
+    Ball ball; // ............ :D
+    Paddle paddle; // ........ :)
+    List<Wall> walls; // ..... :|
+    List<Brick> bricks; // ... :(
 
     public Breakout(Ball ball, Paddle paddle, List<Wall> walls, List<Brick> bricks) {
         this.ball = ball;
@@ -46,38 +48,57 @@ public class Breakout {
     // region  GAME LOGIC
 
     // To avoid multiple collisions
-    private long timeForLastHit;
-    private long lastNowValue = 0;
+    private long timeForLastHit;   // This works as a timer
+    private long lastNowValue = 0; // The now-value from the previous frame
 
     public void update(long now) {
-        // TODO  Main game loop, start functional decomposition from here
 
         if (lastNowValue == 0)
             lastNowValue = now;
         else
             updateTimer(now);
 
+        // Move the paddle
         updatePaddleMovement();
 
+        // Check for any collisions
         if (timeForLastHit <= 0)
             collisionDetection();
 
+        // Move the ball
         ball.moveBall();
+
+        // Check if the ball has left the screen
+        if (ballOutOfBounds()) {
+            lowerLives();
+
+            if (nBalls > 0) {
+                ball.newRandomStartingRot();
+            } else {
+                EventBus.INSTANCE.publish(ModelEvent.Type.GAME_OVER);
+            }
+        }
     }
 
     // Updates the x-value of the paddle, after delta is set.
     private void updatePaddleMovement() {
         paddle.setX(paddle.getX() + paddleVel);
+
+        // Keep the paddle within bounds
+        if (paddle.getX() < 0)
+            paddle.setX(0);
+        else if (paddle.getX() + paddle.getWidth() > GAME_WIDTH)
+            paddle.setX(GAME_WIDTH - paddle.getWidth());
     }
 
-    // Called from BreakoutGUI
+    // Called from BreakoutGUI | Moves the paddle in either direction
     public void movePaddle(PaddleMovement pm) {
         switch (pm) {
             case MOVE_LEFT:
-                paddleVel = -5;
+                paddleVel = -Paddle.PADDLE_SPEED;
                 break;
             case MOVE_RIGHT:
-                paddleVel = 5;
+                paddleVel = Paddle.PADDLE_SPEED;
                 break;
             case STOP_PADDLE:
                 paddleVel = 0;
@@ -85,9 +106,16 @@ public class Breakout {
     }
 
     // When the ball leaves the bottom of the screen, this should be called.
-    private void lowerPoints() {
+    private void lowerLives() {
         nBalls--;
     }
+
+    // Check if the ball has left the screen
+    private boolean ballOutOfBounds() {
+        final double OUT_OF_BOUNDS_MARGIN = 100;
+        return ball.getY() > GAME_HEIGHT + OUT_OF_BOUNDS_MARGIN;
+    }
+
     // endregion
 
     // region COLLISION
@@ -97,7 +125,7 @@ public class Breakout {
 
         // Check collision with all walls
         for (Wall w : walls) {
-            if (AABB.isCollidingWithWall(ball, w)) {
+            if (AABB.isCollidingWithObject(ball, w)) {
                 setCollisionTimer();
 
                 Wall.Dir dir = w.getDirection();
@@ -106,14 +134,22 @@ public class Breakout {
                 else
                     ball.setDx(ball.getDx() * -1);
 
-                break;
+                // Play sound
+                EventBus.INSTANCE.publish(ModelEvent.Type.BALL_HIT_WALL);
+
+                return;
             }
         }
 
         // Check collision with paddle
-        if (AABB.isCollidingWithWall(ball, paddle)) {
+        if (AABB.isCollidingWithObject(ball, paddle)) {
             setCollisionTimer();
             bounceBallOnPaddle();
+
+            // Play sound
+            EventBus.INSTANCE.publish(ModelEvent.Type.BALL_HIT_PADDLE);
+
+            return;
         }
 
         Brick brickToRemove = null;
@@ -121,14 +157,18 @@ public class Breakout {
 
         // Check collision with any brick
         for (Brick b : bricks) {
-            if (AABB.isCollidingWithWall(ball, b)) {
+            if (AABB.isCollidingWithObject(ball, b)) {
                 setCollisionTimer();
 
                 ball.setDy(ball.getDy() * -1);
                 ball.increaseSpeedByFactor(BALL_SPEED_FACTOR);
+                playerPoints += b.getPoints();
 
                 brickToRemove = b;
                 isBrickCollision = true;
+
+                // Play sound
+                EventBus.INSTANCE.publish(ModelEvent.Type.BALL_HIT_BRICK);
 
                 break;
             }

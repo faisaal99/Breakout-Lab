@@ -9,7 +9,7 @@ public class AABB {
     }
 
     // Takes two IPositionables and checks if they collide
-    public static boolean isCollidingWithWall(IPositionable p1, IPositionable p2) {
+    public static boolean isCollidingWithObject(IPositionable p1, IPositionable p2) {
         double p1MinX = p1.getX();
         double p1MinY = p1.getY();
         double p2MinX = p2.getX();

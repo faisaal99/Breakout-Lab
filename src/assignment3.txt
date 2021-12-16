@@ -103,11 +103,11 @@ Inspect everything.
     Wall-objects (= model_v2). Build the new model as before (just add Walls).
     Who will handle the collision detection (who has the data)?
 
-6.  Now inspect the code. You should notice that the same instance-variables/methods
-    are present in more classes. I.e. redundant code. Refactor, move redundant
-    code to abstract base classes. Move methods that could possibly be useful
-    for many kind of objects to the base classes.
-    NOTE: Each class should have a well-defined answer.
+[DONE] 6.  Now inspect the code. You should notice that the same
+    instance-variables/methods are present in more classes, i.e. redundant code.
+    Refactor, move redundant code to abstract base classes. Move methods
+    that could possibly be useful for many kind of objects to the base classes.
+    >> NOTE: Each class should have a well-defined answer.
 
 [DONE] 7.  Add a Paddle to the model_v2 (= model_v3), make it show up on screen.
 
@@ -116,10 +116,10 @@ Inspect everything.
     (and direction i.e. speed is +, 0 , -). Add methods as needed.
     When it's possible to move the paddle, add collision detection for paddle.
 
-9.  In the same manner add Bricks. To avoid multiple collisions use the time
+[DONE] 9.  In the same manner add Bricks. To avoid multiple collisions use the time
     supplied by JavaFX (parameter now in update(), variable timeForLastHit).
 
-10. Add event handling from model to GUI, using the EventBus. If a collision
+[DONE] 10. Add event handling from model to GUI, using the EventBus. If a collision
     occurs in, model should send an event to inform GUI to play a sound, see
     onModelEvent in BreakoutGUI.
 

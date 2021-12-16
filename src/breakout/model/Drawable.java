@@ -31,4 +31,11 @@ public abstract class Drawable implements IPositionable {
     public double getHeight() {
         return height;
     }
+
+    // region GETTERS AND SETTERS
+
+    public void setX(double x) { this.x = x; }
+    public void setY(double y) { this.y = y; }
+
+    // endregion
 }
