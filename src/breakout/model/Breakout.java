@@ -94,14 +94,9 @@ public class Breakout {
     // Called from BreakoutGUI | Moves the paddle in either direction
     public void movePaddle(PaddleMovement pm) {
         switch (pm) {
-            case MOVE_LEFT:
-                paddleVel = -Paddle.PADDLE_SPEED;
-                break;
-            case MOVE_RIGHT:
-                paddleVel = Paddle.PADDLE_SPEED;
-                break;
-            case STOP_PADDLE:
-                paddleVel = 0;
+            case MOVE_LEFT   -> paddleVel = -Paddle.PADDLE_SPEED;
+            case MOVE_RIGHT  -> paddleVel =  Paddle.PADDLE_SPEED;
+            case STOP_PADDLE -> paddleVel =  0;
         }
     }
 

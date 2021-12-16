@@ -1,8 +1,5 @@
 package breakout.model;
 
-import static breakout.model.Breakout.GAME_HEIGHT;
-import static breakout.model.Breakout.GAME_WIDTH;
-
 /*
         A wall for the ball to bounce
  */

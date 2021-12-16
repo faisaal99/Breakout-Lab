@@ -47,7 +47,7 @@ public class Assets {
     // -------------- Audio handling -----------------------------
 
     public AudioClip ballHitPaddle = getSound("ballhitpaddle.wav");
-    public AudioClip ballHitBrick= getSound("ballhitpaddle.wav");
+    public AudioClip ballHitBrick  = getSound("ballhitpaddle.wav");
 
     // -------------- Methods binding objects/classes to assets -----------------
 

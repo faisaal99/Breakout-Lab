@@ -1,10 +1,5 @@
 package breakout.model;
 
-import breakout.collision.AABB;
-
-import static breakout.model.Breakout.GAME_HEIGHT;
-import static breakout.model.Breakout.GAME_WIDTH;
-
 /*
  * A Paddle for the Breakout game
  */

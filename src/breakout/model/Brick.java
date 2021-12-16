@@ -3,9 +3,6 @@ package breakout.model;
 /*
  *   A brick for the rows of bricks
  */
-
-import breakout.collision.AABB;
-
 public class Brick extends Drawable {
 
     public static final double BRICK_WIDTH = 20;  // Default values, use in constructors, not directly

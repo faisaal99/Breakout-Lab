@@ -20,7 +20,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import javax.sound.sampled.AudioSystem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,17 +58,9 @@ public class BreakoutGUI extends Application implements IEventHandler {
 
         KeyCode kc = event.getCode();
         switch (kc) {
-            case LEFT:
-                breakout.movePaddle(MOVE_LEFT);
-                break;
-            case RIGHT:
-                breakout.movePaddle(MOVE_RIGHT);
-                break;
-            case SPACE:
-                renderDebug = !renderDebug;
-                break;
-            default:
-                ; // Nothing to do here
+            case LEFT -> breakout.movePaddle(MOVE_LEFT);
+            case RIGHT -> breakout.movePaddle(MOVE_RIGHT);
+            case SPACE -> renderDebug = !renderDebug;
         }
     }
 
@@ -79,10 +70,8 @@ public class BreakoutGUI extends Application implements IEventHandler {
         }
 
         KeyCode kc = event.getCode();
-        switch (kc) {
-            case LEFT:   // No break, fall through
-            case RIGHT:
-                breakout.movePaddle(STOP_PADDLE);
+        switch (kc) {   // No break, fall through
+            case LEFT, RIGHT -> breakout.movePaddle(STOP_PADDLE);
         }
     }
 
@@ -155,17 +144,9 @@ public class BreakoutGUI extends Application implements IEventHandler {
     private void bindBricks(List<Brick> bricks) {
         for (Brick b : bricks) {
             switch (b.getPoints()) {
-                case 100:
-                    assets.bind(b, assets.greenTile);
-                    break;
-                case 200:
-                    assets.bind(b, assets.blueTile);
-                    break;
-                case 300:
-                    assets.bind(b, assets.redTile);
-                    break;
-                default:
-                    ;   // Nothing
+                case 100 -> assets.bind(b, assets.greenTile);
+                case 200 -> assets.bind(b, assets.blueTile);
+                case 300 -> assets.bind(b, assets.redTile);
             }
         }
     }
@@ -175,19 +156,9 @@ public class BreakoutGUI extends Application implements IEventHandler {
     @Override
     public void onModelEvent(ModelEvent evt) {
         switch (evt.type) {
-            case BALL_HIT_PADDLE:
-
-                break; // TODO
-            case BALL_HIT_BRICK:
-
-                break; // TODO
-            case BALL_HIT_WALL: // This wasn't in the original code
-                break;
-            case GAME_OVER:
-                killGame();
-                break;
-            default:
-                ; // Nothing to do here
+            case BALL_HIT_PADDLE -> assets.ballHitPaddle.play();
+            case BALL_HIT_BRICK -> assets.ballHitBrick.play();
+            case GAME_OVER -> killGame();
         }
     }
 
@@ -209,16 +180,11 @@ public class BreakoutGUI extends Application implements IEventHandler {
     private void handleMenuFile(ActionEvent e) {
         String s = ((MenuItem) e.getSource()).getText();
         switch (s) {
-            case "New":      // Using text on menu item
-                newGame();
-                break;
-            case "Stop":
-                killGame();
-                break;
-            case "Exit":
-                exit(0);
-            default:
-                throw new IllegalArgumentException("No such menu choice " + s);
+            case "New"  -> newGame(); // Using text on menu item
+
+            case "Stop" -> killGame();
+            case "Exit" -> exit(0);
+            default -> throw new IllegalArgumentException("No such menu choice " + s);
         }
     }
 
@@ -238,7 +204,7 @@ public class BreakoutGUI extends Application implements IEventHandler {
             }
         }
 
-        fg.setFill(assets.colorFgText);
+        fg.setFill(Assets.colorFgText);
         fg.setFont(Font.font(14));
         fg.fillText("Points: " + breakout.getPlayerPoints(), 10, GAME_HEIGHT - 5);
         fg.fillText("Balls Left: " + breakout.getNBalls(), 300, GAME_HEIGHT - 5);
@@ -260,7 +226,7 @@ public class BreakoutGUI extends Application implements IEventHandler {
     private AnimationTimer timer;
     private GraphicsContext fg;
     private GraphicsContext bg;
-    private BreakoutMenu menu = new BreakoutMenu(this::handleMenuFile, this::handleMenuLevels);
+    private final BreakoutMenu menu = new BreakoutMenu(this::handleMenuFile, this::handleMenuLevels);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
