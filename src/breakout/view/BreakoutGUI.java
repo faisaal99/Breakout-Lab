@@ -86,6 +86,7 @@ public class BreakoutGUI extends Application implements IEventHandler {
         // TODO Build the model (also: see methods below)
         Ball b = new Ball();
         Paddle p = new Paddle(GAME_WIDTH / 2 - PADDLE_WIDTH, GAME_HEIGHT - 30);
+        p.setDx(Paddle.PADDLE_SPEED);
         List<Brick> bricks = getBricks(6, 16);
         List<Wall> walls = getWalls();
 

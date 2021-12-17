@@ -28,7 +28,7 @@ public class Breakout {
     // Properties
     private int nBalls = 5; // Number of available balls
     int playerPoints;       // Self-explanatory
-    double paddleVel = 0;   // Paddle velocity (negative value means a left-ward direction)
+    double paddleVel = 0;   // Paddle velocity (negative value means a left-direction)
 
     // All objects needed for the model
     Ball ball; // ............ :D
@@ -59,14 +59,15 @@ public class Breakout {
             updateTimer(now);
 
         // Move the paddle
-        updatePaddleMovement();
+        paddle.move();
+        clampPaddleLocation();
 
         // Check for any collisions
         if (timeForLastHit <= 0)
             collisionDetection();
 
         // Move the ball
-        ball.moveBall();
+        ball.move();
 
         // Check if the ball has left the screen
         if (ballOutOfBounds()) {
@@ -81,9 +82,7 @@ public class Breakout {
     }
 
     // Updates the x-value of the paddle, after delta is set.
-    private void updatePaddleMovement() {
-        paddle.setX(paddle.getX() + paddleVel);
-
+    private void clampPaddleLocation() {
         // Keep the paddle within bounds
         if (paddle.getX() < 0)
             paddle.setX(0);
@@ -94,9 +93,9 @@ public class Breakout {
     // Called from BreakoutGUI | Moves the paddle in either direction
     public void movePaddle(PaddleMovement pm) {
         switch (pm) {
-            case MOVE_LEFT   -> paddleVel = -Paddle.PADDLE_SPEED;
-            case MOVE_RIGHT  -> paddleVel =  Paddle.PADDLE_SPEED;
-            case STOP_PADDLE -> paddleVel =  0;
+            case MOVE_LEFT   -> paddle.setDx(-Paddle.PADDLE_SPEED);
+            case MOVE_RIGHT  -> paddle.setDx(Paddle.PADDLE_SPEED);
+            case STOP_PADDLE -> paddle.setDx(0);
         }
     }
 

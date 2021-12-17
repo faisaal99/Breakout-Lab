@@ -16,7 +16,6 @@ public class Ball extends Drawable {
 
     // Properties
     private static final double STARTING_SPEED = 3;
-    private double dx, dy;              // The delta to move in x and y
     private double mSpeed;              // The speed of the ball
 
     // Constructor
@@ -29,23 +28,7 @@ public class Ball extends Drawable {
         newRandomStartingRot();
     }
 
-    // region GETTERS N SETTERS
-
-    public void setDx(double dx) { this.dx = dx; }
-    public void setDy(double dy) { this.dy = dy; }
-
-    public double getDx() { return dx; }
-    public double getDy() { return dy; }
-
-    // endregion
-
     // region UTILITY METHODS
-
-    // Moves the ball
-    public void moveBall() {
-        x += dx;
-        y += dy;
-    }
 
     // When spawned, pick a random location and rotation to begin
     public void newRandomStartingRot() {
