@@ -158,8 +158,8 @@ public class BreakoutGUI extends Application implements IEventHandler {
     public void onModelEvent(ModelEvent evt) {
         switch (evt.type) {
             case BALL_HIT_PADDLE -> assets.ballHitPaddle.play();
-            case BALL_HIT_BRICK -> assets.ballHitBrick.play();
-            case GAME_OVER -> killGame();
+            case BALL_HIT_BRICK  -> assets.ballHitBrick.play();
+            case GAME_OVER       -> killGame();
         }
     }
 
@@ -182,7 +182,6 @@ public class BreakoutGUI extends Application implements IEventHandler {
         String s = ((MenuItem) e.getSource()).getText();
         switch (s) {
             case "New"  -> newGame(); // Using text on menu item
-
             case "Stop" -> killGame();
             case "Exit" -> exit(0);
             default -> throw new IllegalArgumentException("No such menu choice " + s);

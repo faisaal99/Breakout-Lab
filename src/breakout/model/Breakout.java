@@ -14,7 +14,6 @@ import java.util.List;
  *  This class should use other objects delegate work.
  *
  *  NOTE: Nothing visual here
- *
  */
 public class Breakout {
 

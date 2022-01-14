@@ -36,7 +36,7 @@ public class Ball extends Drawable {
         final double MAX_ANGLE_RANGE = Math.toRadians(120);
 
         // Center of width, above the paddle
-        x = GAME_WIDTH / 2 - width;
+        x = GAME_WIDTH / 2 - width / 2;
         y = GAME_HEIGHT - DISTANCE_FROM_BOTTOM;
 
         // Random angle
